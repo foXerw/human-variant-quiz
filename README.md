@@ -19,7 +19,7 @@
 | 框架 | Next.js（App Router）+ TypeScript，纯静态输出，无后端 / 无登录 / 不收集用户数据 |
 | 样式 | Tailwind CSS v4 + shadcn/ui |
 | 图表 | Recharts（分类平均分横向条形图） |
-| 持久化 | localStorage（答题进度 + 分享隐私偏好，仅存于用户浏览器） |
+| 数据保存 | sessionStorage（答题进度 + 分享偏好，仅当前标签页会话，关页即销毁） |
 | 测试 | Vitest（评分纯函数单元测试） |
 | 部署 | Vercel（标准 Next.js 部署） |
 
@@ -52,7 +52,7 @@ src/
 ├── app/
 │   ├── layout.tsx          # 全局布局：导航、页脚免责声明
 │   ├── page.tsx            # 首页：介绍 + 免责声明 + 开始测评
-│   ├── quiz/page.tsx       # 测评页（逐题 + 进度条 + localStorage 恢复）
+│   ├── quiz/page.tsx       # 测评页（逐题 + 进度条 + 会话内进度恢复）
 │   ├── result/page.tsx     # 结果页（总分/称号/图表/明细/分享/重测）
 │   ├── about/page.tsx      # 关于页：评分方法、阈值、隐私、参考占位
 │   └── globals.css
@@ -73,7 +73,7 @@ src/
     ├── types.ts            # 兼容旧路径的 re-export
     ├── scoring.ts          # calculateResult / 权重体系 / 泊松二项 DP 百分位 / 分享文本
     ├── scoring.test.ts     # 评分引擎单元测试
-    └── storage.ts          # localStorage 响应式封装（useSyncExternalStore）
+    └── storage.ts          # sessionStorage 响应式封装（useSyncExternalStore + 旧数据清除）
 ```
 
 ## 评分方法（框架 v2：常模参照）
@@ -122,11 +122,15 @@ src/
 
 ## 隐私保护
 
-- 站点不收集、不上传任何数据；进度只存 localStorage。
+- 站点不收集、不上传任何数据：无后端、无账号、无 Cookie、**无持久化存储**。
+- 答题进度存于 **sessionStorage**（当前标签页会话内存）：刷新与站内跳转不丢进度，
+  关闭标签页即被浏览器自动销毁，设备上不留答案历史；“重新测试”即刻清空。
+  不使用 localStorage 的原因：其持久性会留下无必要的生理特质档案（负债 > 功能）。
+  v1/v2 的 localStorage 遗留数据会在首次访问时自动清除。
 - 分享文本提供两档隐私级别：
   - **只公开得分（默认）**：完成度、称号、常模百分位、分类完成度；
   - **包含差异明细**：额外列出每题的选择与好极/对照极标记。
-- 选择会保存在本地，下次访问保持。
+- 分享偏好同样仅会话内记忆，不跨会话保留。
 
 ## 可访问性
 

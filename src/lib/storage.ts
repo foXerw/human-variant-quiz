@@ -2,17 +2,35 @@ import { useSyncExternalStore } from "react";
 import type { Answers, SharePrivacy } from "@/lib/types";
 
 /**
- * localStorage 响应式封装（基于 useSyncExternalStore）。
- * 数据只存在用户自己的浏览器里，站点不收集、不上传任何信息。
- * SSR / hydration 阶段返回空快照，挂载后自动切换到真实数据，
- * 因此不需要“effect 里 setState”的恢复模式。
+ * sessionStorage 响应式封装（v3）。
+ *
+ * 隐私设计决策：答题数据只存在于当前标签页的会话中——
+ * - 刷新、同标签页内 /quiz ↔ /result 跳转：进度保留（满足“刷新不丢”验收标准）；
+ * - 关闭标签页：浏览器自动销毁，设备上不留任何历史答案记录；
+ * - 不使用 localStorage：它持久到手动清除，对匿名娱乐测评是不必要的留存负债。
+ *
+ * 首次访问时自动清除 v1/v2 时代写入 localStorage 的遗留数据。
+ * 站点无后端、无 Cookie，答案从不离开这台设备。
  */
 
-// v2：评分框架 v2（好极/常模参照）与 v1 手填分值不兼容，旧进度作废
-const ANSWERS_KEY = "hvq:answers:v2";
-const PRIVACY_KEY = "hvq:privacy:v1";
+const ANSWERS_KEY = "hvq:answers:v3";
+const PRIVACY_KEY = "hvq:privacy:v3";
+
+/** 旧版本使用过的持久化键（localStorage），升级后一次性清除 */
+const LEGACY_KEYS = ["hvq:answers:v1", "hvq:answers:v2", "hvq:privacy:v1"];
 
 const EMPTY_ANSWERS: Answers = {};
+
+let legacyPurged = false;
+function purgeLegacy(): void {
+  if (legacyPurged) return;
+  legacyPurged = true;
+  try {
+    for (const key of LEGACY_KEYS) window.localStorage.removeItem(key);
+  } catch {
+    /* ignore */
+  }
+}
 
 function parseAnswers(raw: string | null): Answers {
   if (!raw) return {};
@@ -31,7 +49,7 @@ function parseAnswers(raw: string | null): Answers {
 
 function readItem(key: string): string | null {
   try {
-    return window.localStorage.getItem(key);
+    return window.sessionStorage.getItem(key);
   } catch {
     return null;
   }
@@ -39,9 +57,9 @@ function readItem(key: string): string | null {
 
 function writeItem(key: string, value: string): void {
   try {
-    window.localStorage.setItem(key, value);
+    window.sessionStorage.setItem(key, value);
   } catch {
-    /* 隐私模式 / 存储空间不足时静默失败，不影响答题 */
+    /* 隐私模式 / 配额不足时静默失败，页面内 React 状态仍可正常答题 */
   }
 }
 
@@ -61,12 +79,9 @@ function answersSnapshot(): Answers {
 }
 
 function subscribeAnswers(onChange: () => void): () => void {
+  purgeLegacy();
   answerListeners.add(onChange);
-  window.addEventListener("storage", onChange);
-  return () => {
-    answerListeners.delete(onChange);
-    window.removeEventListener("storage", onChange);
-  };
+  return () => answerListeners.delete(onChange);
 }
 
 function setAnswers(next: Answers): void {
@@ -77,7 +92,7 @@ function setAnswers(next: Answers): void {
   answerListeners.forEach((l) => l());
 }
 
-/** 答题进度（读写响应式；跨标签页 storage 事件也会同步） */
+/** 答题进度（仅当前标签页会话内有效） */
 export function useAnswers(): [Answers, typeof setAnswers] {
   const answers = useSyncExternalStore(
     subscribeAnswers,
@@ -104,11 +119,7 @@ function privacySnapshot(): SharePrivacy {
 
 function subscribePrivacy(onChange: () => void): () => void {
   privacyListeners.add(onChange);
-  window.addEventListener("storage", onChange);
-  return () => {
-    privacyListeners.delete(onChange);
-    window.removeEventListener("storage", onChange);
-  };
+  return () => privacyListeners.delete(onChange);
 }
 
 function setPrivacyValue(next: SharePrivacy): void {
@@ -118,7 +129,7 @@ function setPrivacyValue(next: SharePrivacy): void {
   privacyListeners.forEach((l) => l());
 }
 
-/** 分享隐私级别（默认 "scores"：只公开得分） */
+/** 分享隐私级别（默认 "scores"：只公开得分；同样仅会话内记忆） */
 export function usePrivacy(): [SharePrivacy, typeof setPrivacyValue] {
   const privacy = useSyncExternalStore(
     subscribePrivacy,

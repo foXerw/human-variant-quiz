@@ -17,7 +17,7 @@ import {
 /**
  * 复制分享文本。隐私优先：默认只公开各项得分，
  * 用户显式切换到“包含差异明细”后才会带上每题的选择。
- * 隐私偏好保存在 localStorage，下次访问保持。
+ * 隐私偏好仅在当前标签页会话内记忆，关页即销毁。
  */
 export function SharePanel({ result }: { result: QuizResult }) {
   const [privacy, setPrivacy] = usePrivacy();
@@ -61,7 +61,7 @@ export function SharePanel({ result }: { result: QuizResult }) {
       <CardHeader>
         <CardTitle className="text-base">分享结果</CardTitle>
         <CardDescription>
-          选择公开范围后复制文本。数据只在你自己的浏览器里，本站不收集任何信息。
+          选择公开范围后复制文本。答案只存在于本标签页会话中，关闭即销毁，本站不收集任何信息。
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">

@@ -49,7 +49,7 @@ export default function HomePage() {
         <CardHeader>
           <CardTitle className="text-base">这个测评是什么</CardTitle>
           <CardDescription>
-            {QUESTION_COUNT} 道二选一题目 · 约 5 分钟 · 进度自动保存，刷新不丢
+            {QUESTION_COUNT} 道二选一题目 · 约 5 分钟 · 刷新不丢进度，关闭标签页自动清除
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3 text-sm leading-relaxed text-muted-foreground">
@@ -59,7 +59,7 @@ export default function HomePage() {
             <strong>常模百分位</strong>（超过多少模拟人类），并生成称号、分类得分、分项明细与可复制的分享文本。
           </p>
           <p>
-            数据只保存在你自己的浏览器里（localStorage）。没有登录、没有后端、不收集任何信息。
+            零数据收集：没有登录、没有后端、没有 Cookie。答题进度只保存在当前标签页的会话内存里，关闭标签页即自动销毁，你的设备上不会留下历史记录。
           </p>
         </CardContent>
       </Card>

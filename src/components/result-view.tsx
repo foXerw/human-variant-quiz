@@ -22,7 +22,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 /**
- * 结果页主体：localStorage（响应式 store）→ calculateResult →
+ * 结果页主体：sessionStorage（响应式 store）→ calculateResult →
  * 总分 + 称号 + 分类图表 + 分项明细 + 分享 + 重测。
  * 未答完（或直接访问）时拦截并引导回 /quiz。
  */

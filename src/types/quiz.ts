@@ -43,7 +43,7 @@ export interface Option {
 }
 
 export interface Question {
-  /** 唯一 id，用作 localStorage 的 key，请勿复用 */
+  /** 唯一 id，用作会话存储的答案 key，请勿复用 */
   id: string;
   category: Category;
   /** 题目标题，例如 “香菜反应” */

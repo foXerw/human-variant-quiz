@@ -19,7 +19,7 @@ import { Progress } from "@/components/ui/progress";
 
 /**
  * 逐题答题器：进度条 + 两个选项卡片 + 上一题/下一题。
- * 答案实时写入 localStorage（响应式 store），刷新后从第一道未答题恢复。
+ * 答案实时写入 sessionStorage（响应式 store），刷新后从第一道未答题恢复；关页即销毁。
  * 全部答完才能进入结果页。
  */
 export function QuizRunner() {

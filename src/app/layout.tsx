@@ -57,8 +57,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <p className="leading-relaxed">
               <strong className="font-medium text-foreground">隐私声明：</strong>
               本测评不保存任何答题记录——没有后端服务器、没有账号、不放置追踪
-              Cookie，你的答案从不离开这台设备；进度与结果只存在你浏览器的本地存储
-              （localStorage）里，随时可通过“重新测试”或清除浏览器数据一键删除。
+              Cookie，也不做持久化存储：答题进度只存在于当前标签页的会话内存
+              （sessionStorage）中，<b>关闭标签页即彻底销毁</b>；刷新页面不丢进度，
+              结果只是对会话内数据的实时计算，浏览器历史里也不会留下答案。
               分享文本由你手动复制发送，本站无法查看，也请避免在分享时附带可识别个人的信息。
             </p>
           </div>
