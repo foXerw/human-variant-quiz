@@ -162,7 +162,7 @@ describe("常模百分位（精确泊松二项 DP）", () => {
 });
 
 describe("称号阈值", () => {
-  it("按校准后的区间命中正确称号（39 题版：E=61.6, σ=7.3）", () => {
+  it("按校准后的区间命中正确称号（32 题版：E=61.5, σ=8.1）", () => {
     expect(getTitle(100).title).toBe("究极人类候选");
     expect(getTitle(99.9).title).toBe("高配多面手");
     expect(getTitle(73).title).toBe("高配多面手");
@@ -176,8 +176,8 @@ describe("称号阈值", () => {
 });
 
 describe("真实题库 sanity", () => {
-  it("39 题、全好 = 100 且百分位 > 99.9", () => {
-    expect(REAL_QUESTIONS.length).toBe(39);
+  it("32 题、全好 = 100 且百分位 > 99.9", () => {
+    expect(REAL_QUESTIONS.length).toBe(32);
     const answers: Answers = Object.fromEntries(
       REAL_QUESTIONS.map((q) => [q.id, q.goodOption]),
     );

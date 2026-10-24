@@ -108,8 +108,8 @@ export default function AboutPage() {
         <CardHeader>
           <CardTitle className="text-base">称号阈值</CardTitle>
           <CardDescription>
-            挂在配置完成度上，按模拟人群分布校准（当前 39 题：均值 ≈61.6，σ ≈7.3；73 ≈ 前 6%，62 ≈
-            前 50%，51 ≈ 前 93%）
+            挂在配置完成度上，按模拟人群分布校准（当前 32 题：均值 ≈61.5，σ ≈8.1；73 ≈ 前 9%，62 ≈
+            中位数，51 ≈ 前 90%）
           </CardDescription>
         </CardHeader>
         <CardContent>

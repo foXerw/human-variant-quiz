@@ -49,7 +49,7 @@ export default function HomePage() {
         <CardHeader>
           <CardTitle className="text-base">这个测评是什么</CardTitle>
           <CardDescription>
-            {QUESTION_COUNT} 道二选一题目 · 约 8 分钟 · 刷新不丢进度，关闭标签页自动清除
+            {QUESTION_COUNT} 道二选一题目 · 约 6 分钟 · 刷新不丢进度，关闭标签页自动清除
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3 text-sm leading-relaxed text-muted-foreground">
