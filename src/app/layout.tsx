@@ -35,23 +35,32 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <footer className="border-t">
-          <div className="mx-auto flex max-w-3xl flex-col gap-2 px-4 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-            <p>
-              科普 / 娱乐测评，非医学诊断 · 不评价生理优劣 · 所有特质都是连续谱
-            </p>
-            <div className="flex gap-3">
-              <Link href="/about" className="underline hover:text-foreground">
-                评分方法
-              </Link>
-              <a
-                href="https://github.com/foXerw/human-variant-quiz"
-                className="underline hover:text-foreground"
-                target="_blank"
-                rel="noreferrer"
-              >
-                源码
-              </a>
+          <div className="mx-auto flex max-w-3xl flex-col gap-3 px-4 py-6 text-xs text-muted-foreground">
+            <div className="flex items-center justify-between gap-3">
+              <p>
+                科普 / 娱乐测评，非医学诊断 · 不评价生理优劣 · 所有特质都是连续谱
+              </p>
+              <div className="flex shrink-0 gap-3">
+                <Link href="/about" className="underline hover:text-foreground">
+                  评分方法
+                </Link>
+                <a
+                  href="https://github.com/foXerw/human-variant-quiz"
+                  className="underline hover:text-foreground"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  源码
+                </a>
+              </div>
             </div>
+            <p className="leading-relaxed">
+              <strong className="font-medium text-foreground">隐私声明：</strong>
+              本测评不保存任何答题记录——没有后端服务器、没有账号、不放置追踪
+              Cookie，你的答案从不离开这台设备；进度与结果只存在你浏览器的本地存储
+              （localStorage）里，随时可通过“重新测试”或清除浏览器数据一键删除。
+              分享文本由你手动复制发送，本站无法查看，也请避免在分享时附带可识别个人的信息。
+            </p>
           </div>
         </footer>
       </body>
