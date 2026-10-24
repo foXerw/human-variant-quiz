@@ -27,7 +27,7 @@ export default function AboutPage() {
         <CardContent className="space-y-3 text-sm leading-relaxed text-muted-foreground">
           <ul className="list-disc space-y-1.5 pl-5">
             <li>
-              共 {QUESTION_COUNT} 项（后续扩充到 27 项时规则不变），每项满分 100 分。
+              共 {QUESTION_COUNT} 项（增删题目时规则不变），每项满分 100 分。
             </li>
             <li>
               每题两个选项各有一个分数（例如 100 / 70，100 / 90）。分数代表在本评分体系下
@@ -62,7 +62,7 @@ export default function AboutPage() {
                   i === 0
                     ? `${tier.min} – 100`
                     : tier.min === 0
-                      ? "< 75"
+                      ? `< ${TITLE_TIERS[i - 1].min}`
                       : `${tier.min} – ${TITLE_TIERS[i - 1].min - 0.1}`;
                 return (
                   <tr key={tier.title} className="border-b last:border-0">

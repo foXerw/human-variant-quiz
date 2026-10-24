@@ -89,6 +89,14 @@ describe("calculateResult", () => {
     expect(result!.titleInfo.title).toBe("究极人类候选");
   });
 
+  it("称号阈值按校准后的分位数生效", () => {
+    expect(getTitle(95).title).toBe("究极人类候选");
+    expect(getTitle(91).title).toBe("高配多面手");
+    expect(getTitle(87).title).toBe("标准高配");
+    expect(getTitle(83).title).toBe("特色配置型");
+    expect(getTitle(82.9).title).toBe("极端偏科型");
+  });
+
   it("答题不完整时返回 null（全部答完才能出结果）", () => {
     expect(calculateResult({ q1: 0, q2: 1 }, QUESTIONS)).toBeNull();
     expect(calculateResult({}, QUESTIONS)).toBeNull();
@@ -115,23 +123,12 @@ describe("calculateResult", () => {
   });
 });
 
-describe("称号阈值", () => {
-  it("按区间命中正确称号", () => {
-    expect(getTitle(90).title).toBe("究极人类候选");
-    expect(getTitle(85).title).toBe("高配多面手");
-    expect(getTitle(80).title).toBe("标准高配");
-    expect(getTitle(75).title).toBe("特色配置型");
-    expect(getTitle(74.9).title).toBe("极端偏科型");
-    expect(getTitle(0).title).toBe("极端偏科型");
-  });
-});
-
 describe("generateShareText", () => {
   it("默认隐私模式（scores）不包含任何选项文案", () => {
     const result = calculateResult(mixed, QUESTIONS)!;
     const text = generateShareText(result, "scores");
     expect(text).toContain("86.3");
-    expect(text).toContain("高配多面手");
+    expect(text).toContain("特色配置型"); // 86.3 在校准后的新阈值区间 [83, 87)
     expect(text).toContain("身体与自主神经");
     expect(text).not.toContain("上脸"); // 不暴露具体选择
     expect(text).toContain("非医学诊断");
