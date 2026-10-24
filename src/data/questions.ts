@@ -1,7 +1,7 @@
 import type { Question } from "@/types/quiz";
 
 /**
- * 题目数据 v2（26 条：感官与知觉 11 / 身体与自主神经 11 / 大脑与心理 4）。
+ * 题目数据 v2（39 条：感官与知觉 13 / 身体与自主神经 18 / 大脑与心理 8）。
  *
  * 评分框架 v2（常模参照）：
  * - 每题声明 goodOption（好极）+ goodFrequency（好极人群频率，全球粗估）+ rationale（依据层级）。
@@ -22,7 +22,9 @@ import type { Question } from "@/types/quiz";
  *   v2.4 耳垢/体味题退化为纯事实的“耳垢类型”自察题（社会赞许性偏差 + 复合题干修正）；
  *   v2.5 耳虫题解释扩充（INMI 机制/神曲配方/口香糖干预）；
  *   v2.6 心盲题解释扩充（命名史/草莓自查/ dream 悖论/功能代价定位）；
- *   v2.7 脸盲/方向感题解释扩充（FFA 机制/倒置效应/位置细胞与网格细胞/诺奖背景）
+ *   v2.7 脸盲/方向感题解释扩充（FFA 机制/倒置效应/位置细胞与网格细胞/诺奖背景）；
+ *   v2.8 扩容 +13：失歌/麝香（感官）、卷舌/动耳/搭车拇指/冰淇淋头痛/雷诺/不安腿/蚊叮
+ *   （身体）、音乐寒颤/哈欠传染/幽灵震动/电影落泪（大脑）——称号阈值随之重新校准
  */
 export const questions: Question[] = [
   // ===== 一、感官与知觉 =====
@@ -205,6 +207,50 @@ export const questions: Question[] = [
     rationale: "bandwidth",
     explanation: "TRPM8 受体功能覆盖存在个体差异，属于中性感觉差异，按“感知带宽”计分。",
     sourceNote: "人群频率为粗估，缺乏大样本精确数据。",
+  },
+  {
+    id: "amusia",
+    category: "sensory",
+    title: "走音感知",
+    question: "合唱或 KTV 里，你能不能明确听出别人跑调、节奏跟不上？（轮到你自己唱时也一样跑不了调）",
+    options: [
+      {
+        label: "听得一清二楚",
+        note: "隔壁包房跑调都瞒不过你的耳朵",
+      },
+      {
+        label: "听不出来，觉得都挺好",
+        note: "也可能自己就是那个跑调而不自知的人",
+      },
+    ],
+    goodOption: 0,
+    goodFrequency: 0.93,
+    rationale: "function",
+    explanation:
+      "先天性失歌症（congenital amusia）约占 3%–4%：听力完全正常，但音高微差与节奏结构的感知通路受损（右侧颞上回白质与音高变化检测相关），自己跑调也听不见——不是五音不全的自嘲，是真实存在的感知差异。音乐感知还牵连语音情感细微信号（哀伤的嗓音往往伴随音高轮廓变化）。代价主要在 KTV、合唱这类社交场景，按功能口径计 ×2，不涉健康。",
+    sourceNote: "发生率与音高编码机制见 congenital amusia 系列研究（Hyde & Zatorre；Liu et al. 2019）。",
+  },
+  {
+    id: "musk_smell",
+    category: "sensory",
+    title: "麝香闻感",
+    question: "香水、洗衣液或空气清新剂里标榜“麝香/amber musk”的那股味道，你能明确闻出来吗？",
+    options: [
+      {
+        label: "能——有人觉得甜，有人觉得像汗味",
+        note: "OR7D4 受体的三种表型：甜香型、汗臭型都算“能闻到”",
+      },
+      {
+        label: "闻不到，总觉得它“什么味都没有”",
+        note: "典型的气味特异性盲，不是鼻子堵了",
+      },
+    ],
+    goodOption: 0,
+    goodFrequency: 0.7,
+    rationale: "bandwidth",
+    explanation:
+      "雄烯酮（androstenone，麝香类香料的核心成分之一）是已知最强的人类气味遗传分型案例：OR7D4 嗅觉受体基因变体把人大致分成三派——约 25% 闻到甜香/香草味，约 40% 闻到汗臭/尿骚味并强烈讨厌，约 30% 完全嗅觉盲。香水柜台其实是个基因型检测仪。闻盲没有健康代价，只是香水中少一个可感维度，按感知带宽计分。",
+    sourceNote: "OR7D4 三表型及约 30% 闻盲率见 Keller 等 2007 年 PNAS 研究。",
   },
   {
     id: "hydrogen_cyanide_smell",
@@ -418,6 +464,160 @@ export const questions: Question[] = [
       "MC1R 等基因决定皮肤光型。易晒伤、不易晒黑的光型与皮肤癌（含黑色素瘤）风险显著相关，按风险口径计分。",
     sourceNote: "好极频率依参照人群的肤色分布而变，此处为全球粗估。风险随紫外线暴露而变。",
   },
+  {
+    id: "tongue_rolling",
+    category: "body",
+    title: "卷舌",
+    question: "伸出舌头，不用嘴唇帮忙，能把舌头两侧卷成 U 形槽吗？",
+    options: [
+      {
+        label: "能卷舌",
+        note: "中学生物课经典保留节目",
+      },
+      {
+        label: "卷不了，怎么努力都只会抖",
+        note: "正常变异，不是练得不够",
+      },
+    ],
+    goodOption: 0,
+    goodFrequency: 0.7,
+    rationale: "neutral",
+    explanation:
+      "卷舌率全球约 65%–81%（随族群差异大，非洲人群报告偏低）。一百年教科书把它讲成“单基因显性”，但双生子与领养研究一直对不上账——真实遗传架构更复杂，卷舌其实是舌纵横肌形态与灵活性的复合表型。无功能含义，是本题库最纯粹的“解剖彩票”之一。",
+    sourceNote: "经典遗传学案例：卷舌单基因显性说源于 1940 年代，后被双生子证据反复修正。",
+  },
+  {
+    id: "ear_wiggling",
+    category: "body",
+    title: "耳朵动",
+    question: "不碰耳朵，你能单靠肌肉让它“往后转”或明显抖动吗？",
+    options: [
+      {
+        label: "能，耳朵有“肌肉控制权”",
+        note: "耳前/耳上/耳后三块小肌肉还能被意志调用",
+      },
+      {
+        label: "完全动不了",
+        note: "大多数人如此——这些肌肉只是“遗留件”",
+      },
+    ],
+    goodOption: 0,
+    goodFrequency: 0.15,
+    rationale: "neutral",
+    explanation:
+      "人保留着耳前肌、耳上肌、耳后肌——猫马犬靠它们转耳定向收集声源，人类的用途在进化中退场，但约 10%–20% 的人仍能自主收缩（解剖学期刊专门发表过自愿动耳的发生率调查，作者自带自嘲精神）。它和“动眉毛不动额头”同属运动控制的冷知识彩蛋，无任何健康含义。",
+    sourceNote: "自愿动耳率约一至两成（解剖学期刊调查，Ota 2009 等）；属退化肌残留功能差异。",
+  },
+  {
+    id: "hitchhiker_thumb",
+    category: "body",
+    title: "搭车拇指",
+    question: "手掌平放桌面，拇指放松、轻轻向后掰——能几乎伸直到接近手背那一侧吗？",
+    options: [
+      {
+        label: "能，拇指可以“对折”",
+        note: "拇指指间关节可过伸近 90°",
+      },
+      {
+        label: "最多四十五度左右",
+        note: "普通角度",
+      },
+    ],
+    goodOption: 0,
+    goodFrequency: 0.25,
+    rationale: "neutral",
+    explanation:
+      "Hitchhiker's thumb（搭车拇指，源自招手的姿势）指拇指末节关节过度伸展，约 1/4 人群具备；旧教科书称“隐性单基因”，现在认为是关节囊与伸肌腱构造的连续性状。注意：拇指能碰到前臂是 Beighton 评分（全身关节松弛度）的经典动作之一——但孤立的一项不代表任何疾病，单纯搭车拇指只是配置差异。",
+    sourceNote: "群体频率约 24%（经典解剖统计）；Beighton 评分条目之一，孤立阳性无临床意义。",
+  },
+  {
+    id: "brain_freeze",
+    category: "body",
+    title: "冰淇淋头痛",
+    question: "快速吃冰激凌、冰饮或咬冰块时，额头/太阳穴会来一阵尖锐的“脑壳被冻住”式头痛吗？",
+    options: [
+      {
+        label: "会，疼个几十秒只能憋着",
+        note: "学名“蝶腭神经节神经痛”（sphenopalatine ganglioneuralgia）",
+      },
+      {
+        label: "不会，冰的不疼",
+        note: "你可以放心炫雪糕",
+      },
+    ],
+    goodOption: 1,
+    goodFrequency: 0.45,
+    rationale: "neutral",
+    explanation:
+      "机制是口腔上颚受冷刺激引起血管快速收缩—扩张，三叉神经把这份“账单”误报到额头（牵涉痛）。冰淇淋激发实验报告过半人群会中招，且偏头痛史人群发生率更高、更疼。完全无害，持续几十秒；把舌头压紧上颚回暖能显著加速缓解。",
+    sourceNote: "冰激凌激发实验报告发生率约五至六成；与偏头痛易感正相关。",
+  },
+  {
+    id: "raynaud",
+    category: "body",
+    title: "冷时白手指",
+    question: "冬天接触冷水、从冷冻室拿东西或紧张时，手指会明显变“死白”→发紫→回暖后发红发胀吗？",
+    options: [
+      {
+        label: "没有，最多冻得发红",
+        note: "普通血管收缩反应",
+      },
+      {
+        label: "有，指头会惨白失去知觉",
+        note: "雷诺现象的典型三段式变色",
+      },
+    ],
+    goodOption: 0,
+    goodFrequency: 0.9,
+    rationale: "function",
+    explanation:
+      "这是雷诺现象（Raynaud's）的三段式变色：指动脉痉挛→缺血苍白→缺氧发紫→再灌注发红胀痛。约 4%–10% 的人有典型表现（女性更多），绝大多数为“原发性”、良性，代价在寒冷环境手部灵巧度与游泳、冷冻作业等场景；少数为“继发性”（可伴自身免疫病），单侧、溃烂或成年后新发的应风湿免疫科随访。本题按功能口径计分，不构成任何诊断。",
+    sourceNote: "人群率约 4%（年轻女性更高）；原发/继发区分见风湿病学诊疗共识。",
+  },
+  {
+    id: "restless_legs",
+    category: "body",
+    title: "不安腿",
+    question: "入睡前或久坐不动时（长电影、长途车），腿部会出现“说不清的不适、必须动一动才舒服”的冲动吗？",
+    options: [
+      {
+        label: "从来没有",
+        note: "睡眠与久坐对你不构成酷刑",
+      },
+      {
+        label: "有过，不动就难受",
+        note: "活动后缓解、夜间加重是其特征",
+      },
+    ],
+    goodOption: 0,
+    goodFrequency: 0.93,
+    rationale: "function",
+    explanation:
+      "不安腿综合征（RLS，Willis–Ekbom 病）诊断标准的四条核心：活动腿部的冲动 + 静息诱发/加重 + 活动缓解 + 夜间加重，符合者约 2%–8%（女性更高），与多巴胺通路和铁代谢相关，是睡眠破坏的隐形大户；更轻度、不满足诊断的“腿痒想动”位于同一谱系。按功能口径计分。",
+    sourceNote: "诊断四要素与发生率见 NIH 共识（Allen et al. 2003）。",
+  },
+  {
+    id: "mosquito_attraction",
+    category: "body",
+    title: "蚊子偏爱",
+    question: "户外集体活动中，你是不是通常那个“被咬得最多”的人——朋友没事，你满身包？",
+    options: [
+      {
+        label: "是我，蚊子定点狙击",
+        note: "CO₂ 排量、体温、皮肤菌群挥发物都在起作用",
+      },
+      {
+        label: "我很少被咬",
+        note: "",
+      },
+    ],
+    goodOption: 1,
+    goodFrequency: 0.55,
+    rationale: "neutral",
+    explanation:
+      "蚊子择人有真实科学：已证实的因素包括 CO₂ 排放量、体温、皮肤表面微生物组产生的挥发性化合物（乳酸、氨类等），O 型血偏好说在双盲实验中未获稳定支持——问题不在血，在皮肤化学。但请注意这题的自评天然带偏差（疼都长在自己腿上），所以按中性口径计分，别为它买“驱蚊神药”。",
+    sourceNote: "皮肤菌群与吸引力关系见 Verhulst 等 2011 年实验室研究；血型说的证据等级低。",
+  },
 
   // ===== 三、大脑与心理 =====
   {
@@ -483,6 +683,94 @@ export const questions: Question[] = [
     explanation:
       "方向感的神经基础是 2014 年诺贝尔奖（O'Keefe & Moser）揭示的海马体“位置细胞”+ 内嗅皮层“网格细胞”——它们共同构建“认知地图”，让你能在脑内建模空间关系。但方向感不是纯天赋，而是**策略 × 训练**的产物：有人依赖“认知地图”（整体布局），有人依赖“路线策略”（记住一串转弯指令），后者在陌生环境容易崩。伦敦出租车司机的经典研究显示，通过“知识考试”（The Knowledge）后海马体后部明显增大——说明空间导航能力可塑性很强。功能代价在陌生城市导航、停车找车、紧急疏散等场景，按功能口径计 ×2。",
     sourceNote: "归类修正：空间导航属认知功能。位置细胞/网格细胞见 O'Keefe & Dostrovsky（1971）、Hafting et al.（2005）；伦敦出租车司机海马体可塑性见 Maguire et al.（2000）。",
+  },
+  {
+    id: "frisson",
+    category: "brain",
+    title: "音乐起鸡皮疙瘩",
+    question: "听到某些音乐段落时，会不会头皮发麻、后颈起鸡皮疙瘩、胸口发胀，甚至想哭？",
+    options: [
+      {
+        label: "会，我甚至会专门收藏“起皮疙瘩段落”反复听",
+        note: "frisson（音乐寒颤），与奖赏回路的多巴胺释放有关",
+      },
+      {
+        label: "从来没这种感觉，音乐就是背景音乐",
+        note: "同样正常——大脑奖赏系统对音乐没那么“买账”",
+      },
+    ],
+    goodOption: 0,
+    goodFrequency: 0.6,
+    rationale: "bandwidth",
+    explanation:
+      "Frisson（音乐引发的寒颤感）是报告率最高的审美战栗现象：脑成像研究显示高潮段落时听觉皮层与奖赏系统（伏隔核）耦合加强并伴随多巴胺释放，“紧张—违背期待—解决”的音乐结构是最常见触发器。终身报告率在 55%–86% 之间，与“经验开放性”人格维度相关。纯享乐带宽增益，无代价。",
+    sourceNote: "多巴胺机制见 Salimpoor et al. 2011（Nat Neurosci）；寒颤的脑成像见 Blood & Zatorre 2001。",
+  },
+  {
+    id: "contagious_yawn",
+    category: "brain",
+    title: "打哈欠传染",
+    question: "看别人打哈欠、听到打哈欠的声音，甚至光是想“打哈欠”这三个字——你会被带得想打吗？（本题自带传染性，答了再说）",
+    options: [
+      {
+        label: "会被传染",
+        note: "约七成成年人易感",
+      },
+      {
+        label: "毫无感觉",
+        note: "也不奇怪，五岁以下幼儿大多不接招",
+      },
+    ],
+    goodOption: 0,
+    goodFrequency: 0.75,
+    rationale: "neutral",
+    explanation:
+      "哈欠传染在人类、黑猩猩、狗、狮等社会性动物中都有记录，机制的主流解释是“运动共振”（观察动作自动激活同一运动程序）。它与年龄（4 岁以下罕见）、熟悉度（亲友的哈欠更易传染）相关，也报告过与自闭特质的负相关——但请注意：“不传染”绝不等于冷血，很多完全健康的人就是不接招。中性题，重点是现在有没有想打。",
+    sourceNote: "跨物种与年龄差异见 Anderson et al. 2004 等；“不传染≠共情缺陷”，个体差异研究结论并不强硬。",
+  },
+  {
+    id: "phantom_vibration",
+    category: "brain",
+    title: "幽灵震动",
+    question: "你是否有过口袋里“明显感到手机震了/响了”，掏出来发现什么都没有的经历？",
+    options: [
+      {
+        label: "经常，虚惊是日常",
+        note: "六至八成智能手机用户报告过",
+      },
+      {
+        label: "几乎没有",
+        note: "注意力习惯不同，无优劣",
+      },
+    ],
+    goodOption: 1,
+    goodFrequency: 0.3,
+    rationale: "neutral",
+    explanation:
+      "幽灵震动/铃声综合征（RVTS）：大脑对“手机信号”保持预备状态，把衣服摩擦、肌肉抽动等微弱刺激误报成震动——预测性感知的假阳性。问卷报告率高达六至八成，与等待消息的状态和相关特质有关，不是感官损伤，而是注意力替你把感知调偏了。好极方向取“不被手机劫持注意力”，属趣味宣言。",
+    sourceNote: "发生率 60%–80% 见 Michaelidou & Cheung 2011 大学生问卷研究；与焦虑特质相关。",
+  },
+  {
+    id: "movie_tears",
+    category: "brain",
+    title: "电影落泪",
+    question: "看电影/动漫里的悲伤情节（不是恐怖片，不是恶心画面），你会控制不住眼眶发酸吗？",
+    options: [
+      {
+        label: "会，影院就是我的合法眼泪回收站",
+        note: "明知是假的仍被触动，叫“准情绪”（para-emotion）",
+      },
+      {
+        label: "不会，进不去那个“假故事”",
+        note: "认知距离型观影，同样正常",
+      },
+    ],
+    goodOption: 0,
+    goodFrequency: 0.55,
+    rationale: "neutral",
+    explanation:
+      "为虚构作品流泪是共情研究的经典范式：它要求观众主动投入情感模拟去“补给”一个并不存在的处境（学界称 para-emotion，Tan 1996）。会哭与不会哭代表情绪模拟的两种稳定风格，而非“有没有共情”——很多“不哭”的人只是维持着清醒的叙事距离。性别的自我报告差异远大于实测差异。中性题。",
+    sourceNote: "电影情绪理论见 Tan (1996)；哭泣的个体差异见 Vingerhoets 哭泣研究系列。",
   },
 ];
 

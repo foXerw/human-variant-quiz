@@ -162,22 +162,22 @@ describe("常模百分位（精确泊松二项 DP）", () => {
 });
 
 describe("称号阈值", () => {
-  it("按校准后的区间命中正确称号", () => {
+  it("按校准后的区间命中正确称号（39 题版：E=61.6, σ=7.3）", () => {
     expect(getTitle(100).title).toBe("究极人类候选");
     expect(getTitle(99.9).title).toBe("高配多面手");
-    expect(getTitle(75).title).toBe("高配多面手");
-    expect(getTitle(74.9).title).toBe("标准高配");
-    expect(getTitle(61).title).toBe("标准高配");
-    expect(getTitle(60.9).title).toBe("特色配置型");
-    expect(getTitle(47).title).toBe("特色配置型");
-    expect(getTitle(46.9).title).toBe("极端偏科型");
+    expect(getTitle(73).title).toBe("高配多面手");
+    expect(getTitle(72.9).title).toBe("标准高配");
+    expect(getTitle(62).title).toBe("标准高配");
+    expect(getTitle(61.9).title).toBe("特色配置型");
+    expect(getTitle(51).title).toBe("特色配置型");
+    expect(getTitle(50.9).title).toBe("极端偏科型");
     expect(getTitle(0).title).toBe("极端偏科型");
   });
 });
 
 describe("真实题库 sanity", () => {
-  it("26 题、总权重、全好 = 100 且百分位 > 99.9", () => {
-    expect(REAL_QUESTIONS.length).toBe(26);
+  it("39 题、全好 = 100 且百分位 > 99.9", () => {
+    expect(REAL_QUESTIONS.length).toBe(39);
     const answers: Answers = Object.fromEntries(
       REAL_QUESTIONS.map((q) => [q.id, q.goodOption]),
     );
