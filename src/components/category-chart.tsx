@@ -28,7 +28,7 @@ export function CategoryChart({ categories }: { categories: CategoryScore[] }) {
       style={{ height }}
       role="img"
       aria-label={categories
-        .map((c) => `${c.label} ${c.average} 分（共 ${c.count} 题）`)
+        .map((c) => `${c.label}完成度 ${c.average}（共 ${c.count} 题）`)
         .join("，")}
     >
       <ResponsiveContainer width="100%" height="100%">
@@ -68,7 +68,8 @@ export function CategoryChart({ categories }: { categories: CategoryScore[] }) {
                 <div className="rounded-md border bg-popover px-3 py-2 text-sm text-popover-foreground shadow-md">
                   <p className="font-medium">{c.label}</p>
                   <p className="text-muted-foreground">
-                    平均分 <span className="font-semibold text-foreground">{c.average}</span> / 100
+                    完成度{" "}
+                    <span className="font-semibold text-foreground">{c.average}</span> / 100
                     （共 {c.count} 题）
                   </p>
                 </div>

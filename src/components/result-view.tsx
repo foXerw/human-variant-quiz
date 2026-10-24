@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { cn } from "cn";
 import { QUESTIONS } from "@/data/questions";
-import { calculateResult } from "@/lib/scoring";
+import { calculateResult, formatOdds } from "@/lib/scoring";
 import { useAnswers, useMounted } from "@/lib/storage";
 import { CATEGORY_META } from "@/lib/types";
 import { Disclaimer } from "@/components/disclaimer";
@@ -65,12 +65,15 @@ export function ResultView() {
 
   return (
     <div className="space-y-6">
-      {/* 总分 + 称号（hero figure：每个视图只有一个大数字） */}
+      {/* 完成度 + 称号（hero figure：每个视图只有一个大数字） */}
       <Card>
         <CardContent className="flex flex-col items-center gap-2 py-8 text-center">
-          <p className="text-sm text-muted-foreground">总分（满分 100）</p>
+          <p className="text-sm text-muted-foreground">配置完成度（全部好极 = 100）</p>
           <p className="text-6xl font-semibold tracking-tight sm:text-7xl">
             {result.totalScore}
+          </p>
+          <p className="text-sm font-medium">
+            常模百分位：超过 {result.percentile}% 的模拟人类
           </p>
           <Badge variant="secondary" className="mt-2 px-3 py-1 text-sm">
             {result.titleInfo.title}
@@ -78,14 +81,20 @@ export function ResultView() {
           <p className="max-w-md text-sm text-muted-foreground">
             {result.titleInfo.blurb}
           </p>
+          <p className="max-w-md text-xs text-muted-foreground/80">
+            按各特质的人群频率估算，随机出现“全部好极”配置的概率约为{" "}
+            {formatOdds(result.perfectProbability)}。
+          </p>
         </CardContent>
       </Card>
 
       {/* 分类平均分：图表 + 文字表格视图（不依赖图表传达信息） */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">分类平均分</CardTitle>
-          <CardDescription>三个维度各自的平均分（满分 100）</CardDescription>
+          <CardTitle className="text-base">分类完成度</CardTitle>
+          <CardDescription>
+            三个维度各自的加权完成度（全部好极 = 100）
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <CategoryChart categories={result.categories} />
@@ -119,28 +128,30 @@ export function ResultView() {
                       {CATEGORY_META[item.category].label}
                     </span>
                   </h3>
-                  <span className="text-sm font-semibold tabular-nums">
-                    {item.score} 分
+                  <span className="flex items-center gap-1.5">
+                    <Badge variant={item.isGood ? "default" : "outline"}>
+                      {item.isGood ? "好极 ✓" : "对照极"}
+                    </Badge>
+                    <span
+                      className="text-xs text-muted-foreground tabular-nums"
+                      title="该题权重（由依据层级决定：风险 3 / 功能 2 / 带宽 1 / 中性 1）"
+                    >
+                      权重 ×{item.weight}
+                    </span>
                   </span>
                 </div>
-                <p className="mt-0.5 text-xs text-muted-foreground">{item.question}</p>
+                <p className="mt-1.5">
+                  <Badge variant="secondary" className="font-normal">
+                    依据：{item.rationaleLabel}
+                  </Badge>
+                  <span className="ml-2 text-xs text-muted-foreground tabular-nums">
+                    好极人群频率 ≈ {Math.round(item.goodFrequency * 100)}%
+                  </span>
+                </p>
+                <p className="mt-1.5 text-xs text-muted-foreground">{item.question}</p>
                 <p className="mt-1 text-sm">
                   你的选择：<span className="font-medium">{item.selectedLabel}</span>
                 </p>
-                {/* 得分 meter：轨道与填充同一色阶（前景色的浅/深两步） */}
-                <div
-                  className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-muted"
-                  role="meter"
-                  aria-valuenow={item.score}
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                  aria-label={`${item.title} 得分`}
-                >
-                  <div
-                    className="h-full rounded-full bg-foreground"
-                    style={{ width: `${item.score}%` }}
-                  />
-                </div>
                 <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
                   {item.explanation}
                 </p>

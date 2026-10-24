@@ -54,8 +54,9 @@ export default function HomePage() {
         </CardHeader>
         <CardContent className="space-y-3 text-sm leading-relaxed text-muted-foreground">
           <p>
-            回答一组关于感官、身体与大脑的二选一问题，系统按“每项满分 100
-            分”的评分表计算平均分，生成你的总分、称号、分类得分与分项明细，还可以复制一段分享文本。
+            回答一组关于感官、身体与大脑的二选一问题。每题声明一个“好极”，系统计算你的
+            <strong>配置完成度</strong>（全部好极 = 100 = 究极人类）和
+            <strong>常模百分位</strong>（超过多少模拟人类），并生成称号、分类得分、分项明细与可复制的分享文本。
           </p>
           <p>
             数据只保存在你自己的浏览器里（localStorage）。没有登录、没有后端、不收集任何信息。

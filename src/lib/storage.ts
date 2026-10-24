@@ -8,7 +8,8 @@ import type { Answers, SharePrivacy } from "@/lib/types";
  * 因此不需要“effect 里 setState”的恢复模式。
  */
 
-const ANSWERS_KEY = "hvq:answers:v1";
+// v2：评分框架 v2（好极/常模参照）与 v1 手填分值不兼容，旧进度作废
+const ANSWERS_KEY = "hvq:answers:v2";
 const PRIVACY_KEY = "hvq:privacy:v1";
 
 const EMPTY_ANSWERS: Answers = {};
