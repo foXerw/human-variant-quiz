@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "cn";
 import { QUESTIONS } from "@/data/questions";
-import { isComplete } from "@/lib/scoring";
 import { useAnswers, useMounted } from "@/lib/storage";
 import { CATEGORY_META } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
@@ -40,8 +39,10 @@ export function QuizRunner() {
   }
 
   const firstUnanswered = QUESTIONS.findIndex((q) => answers[q.id] === undefined);
-  const derivedIndex =
-    firstUnanswered === -1 ? QUESTIONS.length - 1 : firstUnanswered;
+  const complete = firstUnanswered === -1;
+  // 未完成：恢复时停在第一道未答题；已完成：回到第 1 题（配完成提示条），
+  // 避免从导航栏进入时被扔在最后一题
+  const derivedIndex = complete ? 0 : firstUnanswered;
   const current = Math.min(Math.max(navOverride ?? derivedIndex, 0), QUESTIONS.length - 1);
 
   const answeredCount = QUESTIONS.filter((q) => answers[q.id] !== undefined).length;
@@ -60,7 +61,7 @@ export function QuizRunner() {
     if (selected === undefined) return;
     if (isLast) {
       // 最后一题：全部答完才能出结果
-      if (isComplete(answers, QUESTIONS)) {
+      if (complete) {
         router.push("/result");
       }
       return;
@@ -75,6 +76,11 @@ export function QuizRunner() {
   function jumpToFirstUnanswered() {
     const idx = QUESTIONS.findIndex((q) => answers[q.id] === undefined);
     if (idx !== -1) setNavOverride(idx);
+  }
+
+  function clearAndRestart() {
+    setAnswers({});
+    setNavOverride(null); // 回到“第 1 题”的派生状态
   }
 
   return (
@@ -94,6 +100,29 @@ export function QuizRunner() {
           aria-label={`答题进度：${answeredCount} / ${QUESTIONS.length} 题`}
         />
       </div>
+
+      {/* 已完成状态提示条：查看结果或清空重做 */}
+      {complete && (
+        <div
+          role="status"
+          className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-primary/30 bg-accent/60 p-3 text-sm"
+        >
+          <span>你已答完全部 {QUESTIONS.length} 题，可以直接查看结果。</span>
+          <div className="flex gap-2">
+            <Button size="lg" className="h-8 px-3" onClick={() => router.push("/result")}>
+              查看结果
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="h-8 px-3"
+              onClick={clearAndRestart}
+            >
+              清空重做
+            </Button>
+          </div>
+        </div>
+      )}
 
       <Card>
         <CardHeader>
@@ -174,7 +203,7 @@ export function QuizRunner() {
               {isLast ? "查看结果" : "下一题"}
             </Button>
           </div>
-          {isLast && !isComplete(answers, QUESTIONS) && (
+          {isLast && !complete && (
             <p className="text-center text-xs text-muted-foreground">
               还有题目未作答。
               <button
